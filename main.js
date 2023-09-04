@@ -77,7 +77,7 @@ $("#token-amount").on("change", function () {
   tokenCount = $("#token-count").text();
   tokenCount = parseInt(tokenCount);
   if (tokenAmount > tokenCount) {
-    $("#wf-form-submit-ticket input[type=submit], form[data-name=gift-form] input[type=submit]")
+    $("#wf-form-submit-ticket input[type=submit]")
       .prop("disabled", true)
       .addClass("disabled");
     tokenInput.val("0");
@@ -85,7 +85,7 @@ $("#token-amount").on("change", function () {
       "You don't have enough credits. <a href='https://hiophelia.com/members/buy-credits'>Purchase more</a>"
     );
   } else {
-    $("#wf-form-submit-ticket input[type=submit], form[data-name=gift-form] input[type=submit]")
+    $("#wf-form-submit-ticket input[type=submit]")
       .prop("disabled", false)
       .removeClass("disabled");
     credit_calc = tokenAmount * 1.56;
