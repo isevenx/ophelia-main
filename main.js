@@ -118,7 +118,7 @@ function checkUrl() {
     if (typeof Cookies.get("ftu") !== "undefined") {
       $("#first-time").remove();
     } else {
-      $("#first-time").show();
+      $("#first-time").css("display","flex");
     }
 
     // Find all the immediate child divs of the element with an ID of featured-pro.
