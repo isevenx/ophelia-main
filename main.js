@@ -1,3 +1,5 @@
+//ophelia v0.1
+
 document.addEventListener("DOMContentLoaded", function () {
   // Get the `_ms-mem` object from the local storage
   const msMem = JSON.parse(localStorage.getItem("_ms-mem"));
@@ -129,34 +131,6 @@ function checkUrl() {
 
     // Remove all the divs except for the first one.
     pros.slice(1).remove();
-
-    // Get the URL input field.
-    var screenRecURL = document.getElementById("screen-recording");
-    var projectLink = document.getElementById("project-link");
-
-    // Set up an event listener for the input field's `change` event.
-    screenRecURL.addEventListener("change", function () {
-      // Get the value of the input field.
-      var url = screenRecURL.value;
-
-      // Check if the value matches the regular expression.
-      if (!validateURL(url)) {
-        // Display an error message.
-        alert("The URL must start with https://");
-      }
-    });
-
-    // Set up an event listener for the input field's `change` event.
-    projectLink.addEventListener("change", function () {
-      // Get the value of the input field.
-      var url = projectLink.value;
-
-      // Check if the value matches the regular expression.
-      if (!validateURL(url)) {
-        // Display an error message.
-        alert("The URL must start with https://");
-      }
-    });
   }
 
   if (url.indexOf("/pro/cash-out") > -1) {
@@ -225,13 +199,13 @@ $(".action-button.solution").click(function () {
 
 window.addEventListener("load", checkUrl);
 
-$("#ticket-table").hide();
+$("#ticket-table, #pro-tickets").hide();
 $(document).ready(function () {
   var cid = $("#cid").text();
 
   $("#payout-id").val(cid);
 
-  $(".tickets-cl > div").each(function () {
+  $("#ticket-table .tickets-cl > div").each(function () {
     var card = $(this);
     if (card.attr("client-id") !== cid) {
       card.remove();
@@ -240,7 +214,16 @@ $(document).ready(function () {
     }
   });
 
-  $("#ticket-table").show();
+  $("#pro-tickets .tickets-cl > div").each(function () {
+    var card = $(this);
+    if (card.attr("helper-id") !== cid) {
+      card.remove();
+    } else {
+      card.show();
+    }
+  });
+
+  $("#ticket-table, #pro-tickets").show();
 });
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -284,7 +267,7 @@ $("#tt-solved").on("click", function (evt) {
 });
 
 // Get the submit button
-var submitButton = $(".form-button");
+var submitButton = $(".wh-form .form-button");
 
 // Get all of the input fields in the form
 var inputFields = $(".wh-form input");
@@ -315,4 +298,52 @@ inputFields.on("input", function () {
         .val("Submit ticket");
     }
   });
+});
+
+//gift
+
+var giftButton = $("#gift-submit");
+
+// Get all of the input fields in the form
+var giftFields = $("#wf-form-gift-form input");
+
+// When any input field is changed, check if the form is completely filled out
+giftFields.on("input", function () {
+  // Check if all of the input fields have a value
+  var isFormFilledOut = true;
+  giftFields.each(function () {
+    if ($(this).val() === "") {
+      isFormFilledOut = false;
+      return false;
+    }
+  });
+
+  // When the form is submitted, disable the submit button
+  $("#wf-form-gift-form").submit(function () {
+    // If the form is filled out, disable the submit button
+    if (isFormFilledOut) {
+      giftButton
+        .prop("disabled", true)
+        .addClass("disabled")
+        .val("Please wait...");
+    } else {
+      giftButton
+        .prop("disabled", false)
+        .removeClass("disabled")
+        .val("Send the gift");
+    }
+  });
+});
+
+$("#solution-video, #resource-link, #screen-recording, #project-link").attr(
+  "type",
+  "url"
+);
+
+// Get the email input field.
+var emailInput = $("#email-2");
+
+// Convert the value to lowercase on keyup.
+emailInput.keyup(function () {
+  $(this).val($(this).val().toLowerCase());
 });
