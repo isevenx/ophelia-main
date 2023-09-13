@@ -176,229 +176,227 @@ const tokensConfig = {
   
   window.addEventListener("load", checkUrl);
       
-  $(document).ready(function() {
-    // hide pro tickets
-    $("#ticket-table, #pro-tickets").hide();
-    
-    // new ticket -> token input onChange
-    $("#token-amount").on("change", function () {
-      tokenInput = $(this);
-      tokenAmount = getTicketValue()
-      tokenCount = $("#token-count").text();
-      tokenCount = parseInt(tokenCount);
-      if (tokenAmount > tokenCount) {
-        $("#wf-form-submit-ticket input[type=submit]")
-        .prop("disabled", true)
-        .addClass("disabled");
-        tokenInput.val("0");
-        $(".credit-calc").html(
-          "You don't have enough credits. <a href='https://hiophelia.com/members/buy-credits'>Purchase more</a>"
-          );
-      } else {
-        $("#wf-form-submit-ticket input[type=submit]")
-        .prop("disabled", false)
-        .removeClass("disabled");
-        credit_calc = tokenAmount * tokensConfig.TICKET_VALUE_MULTIPLAYER;
-        credit_calc = parseFloat(credit_calc).toFixed(2);
-        $(".credit-calc").text("equal to $" + credit_calc + " USD");
-      }
-      if (tokenAmount < tokensConfig.MINIMUM_TICKET_CREDITS) {
-        $("#wf-form-submit-ticket input[type=submit]")
-        .prop("disabled", true)
-        .addClass("disabled");
-        tokenInput.val("0");
-        $(".credit-calc").text("Please enter at least 25 credits");
-      }
-    });
-      
-    // solve ticket animation
-    $(".action-button.solve").click(function () {
-      $(".main--content").animate(
-        {
-          scrollTop: $("#solve-table").offset().top
-        },
-        750
-      );
-    });
-        
-    // solution button animation
-    $(".action-button.solution").click(function () {
-      $(".main--content").animate(
-        {
-          scrollTop: $("#solution-row").offset().top
-        },
-        750
-      );
-    });
-      
-    // grab MS member id
-    var cid = $("#cid").text();
-    $("#payout-id").val(cid);
-    
-    // hide pro tickets
-    $("#ticket-table .tickets-cl > div").each(function () {
-      var card = $(this);
-      if (card.attr("client-id") !== cid) {
-        card.remove();
-      } else {
-        card.show();
-      }
-    });
-    $("#pro-tickets .tickets-cl > div").each(function () {
-      var card = $(this);
-      if (card.attr("helper-id") !== cid) {
-        card.remove();
-      } else {
-        card.show();
-      }
-    });
-          
-    $("#ticket-table, #pro-tickets").show();
-          
-    // notifications
-    const urlParams = new URLSearchParams(window.location.search);
-    const msg = urlParams.get("msg");
-    if (msg !== null) {
-      console.log(msg);
-      $(".messages-wrapper").show();
-      $("#msg-" + msg).show();
-      setTimeout(() => {
-        $(".messages-wrapper").fadeOut(500, () => {
-          $(".messages-wrapper").hide();
-          $("#msg-" + msg).hide();
-        });
-      }, 5000);
+// hide pro tickets
+$("#ticket-table, #pro-tickets").hide();
+
+// new ticket -> token input onChange
+$("#token-amount").on("change", function () {
+    tokenInput = $(this);
+    tokenAmount = getTicketValue()
+    tokenCount = $("#token-count").text();
+    tokenCount = parseInt(tokenCount);
+    if (tokenAmount > tokenCount) {
+    $("#wf-form-submit-ticket input[type=submit]")
+    .prop("disabled", true)
+    .addClass("disabled");
+    tokenInput.val("0");
+    $(".credit-calc").html(
+        "You don't have enough credits. <a href='https://hiophelia.com/members/buy-credits'>Purchase more</a>"
+        );
+    } else {
+    $("#wf-form-submit-ticket input[type=submit]")
+    .prop("disabled", false)
+    .removeClass("disabled");
+    credit_calc = tokenAmount * tokensConfig.TICKET_VALUE_MULTIPLAYER;
+    credit_calc = parseFloat(credit_calc).toFixed(2);
+    $(".credit-calc").text("equal to $" + credit_calc + " USD");
     }
-          
-    // ticket table
-    $("#tt-all").on("click", function (evt) {
-      $(".ticket-table--tab-link").removeClass("current");
-      $(this).addClass("current");
-      $("#w-tabs-0-data-w-tab-0").triggerHandler("click");
-      evt.preventDefault();
-    });
-    $("#tt-open").on("click", function (evt) {
-      $(".ticket-table--tab-link").removeClass("current");
-      $(this).addClass("current");
-      $("#w-tabs-0-data-w-tab-1").triggerHandler("click");
-      evt.preventDefault();
-    });
-    $("#tt-ip").on("click", function (evt) {
-      $(".ticket-table--tab-link").removeClass("current");
-      $(this).addClass("current");
-      $("#w-tabs-0-data-w-tab-2").triggerHandler("click");
-      evt.preventDefault();
-    });
-    $("#tt-solved").on("click", function (evt) {
-      $(".ticket-table--tab-link").removeClass("current");
-      $(this).addClass("current");
-      $("#w-tabs-0-data-w-tab-3").triggerHandler("click");
-      evt.preventDefault();
-    });
-          
-    // ticket submit form
-    var submitButton = $(".wh-form .form-button");
-    // Get all of the input fields in the form
-    var inputFields = $(".wh-form input");
-          
-    // When any input field is changed, check if the form is completely filled out
-    inputFields.on("input", function () {
-      // Check if all of the input fields have a value
-      const isFormFilledOut = Array.from(inputFields).every(input => input.value !== '')
-            
-      // disable submit button if the form is not filled out
-      if (isFormFilledOut) {
-        submitButton.prop("disabled", false).removeClass("disabled")
-      } else {
-        submitButton.prop('disabled', true).addClass('disabled')
-      }
-      $('.wh-form').submit(function(e) {
-        e.preventDefault()
-        const form = $(this)
-        const thisForm = this
-        this.checkValidity()
-        // check if the form is filled out
-        const isFormFilledOut = Array.from(inputFields).every(input => input.value !== '')
-        // check if ticket value is greater than 25
-        const isTicketValueGreaterThanOrEqualToMinimum = getTicketValue() >= tokensConfig.MINIMUM_TICKET_CREDITS
-  
-        if (isFormFilledOut && isTicketValueGreaterThanOrEqualToMinimum) {
-          submitButton.prop('disabled', true).addClass('disabled').val('Please wait...')
-          form.submit()
-        }
-      })
-    })
+    if (tokenAmount < tokensConfig.MINIMUM_TICKET_CREDITS) {
+    $("#wf-form-submit-ticket input[type=submit]")
+    .prop("disabled", true)
+    .addClass("disabled");
+    tokenInput.val("0");
+    $(".credit-calc").text("Please enter at least 25 credits");
+    }
+});
     
-    // gift
-    var giftButton = $("#gift-submit");
-      // Get all of the input fields in the form
-    var giftFields = $("#wf-form-gift-form input");
-    
-    // When any input field is changed, check if the form is completely filled out
-    giftFields.on("input", function () {
-      const isFormFilledOut = Array.from(giftFields).every(input => input.value !== '')
-      // disable submit button if the form is not filled out
-      if (isFormFilledOut) {
-        giftButton.prop("disabled", false).removeClass("disabled")
-      } else {
-        giftButton.prop('disabled', true).addClass('disabled')
-      }
-    })
-      
-    // When the form is submitted, disable the submit button
-    $("#wf-form-gift-form").submit(function (e) {
-      e.preventDefault()
-      const form = $(this)
-      // check if the form is filled out
-      const isFormFilledOut = Array.from(giftFields).every(input => input.value !== '')
-      // check if credits are above 0
-      const isCreditsAboveZero = getGiftValue() > 0
-      if (isFormFilledOut && isCreditsAboveZero) {
-        giftButton.prop('disabled', true).addClass('disabled').val('Please wait...')
-        form.submit()
-      }
-    });
-    
-    // lowercase email input in the send gift form
-    var emailInput = $("#email-2");
-    emailInput.keyup(function () {
-      $(this).val($(this).val().toLowerCase());
-    });
-  
-    // update ticket submit form inputs to be of type url
-    $("#solution-video, #resource-link, #screen-recording, #project-link").attr(
-      "type",
-      "url"
+// solve ticket animation
+$(".action-button.solve").click(function () {
+    $(".main--content").animate(
+    {
+        scrollTop: $("#solve-table").offset().top
+    },
+    750
     );
-      
-    // update ticket submit form inputs to be of type url
-    $('#screen-recording').on('blur', function() {
-      const field = this
-      const errorMessage = 'Incorrect URL - should be Loom video link'
-      try {
-        const url = new URL(field.value)
-        if (!url.origin.endsWith('loom.com')) {
-          field.setCustomValidity(errorMessage)
-          throw new Error(errorMessage)
-        }
-        field.setCustomValidity('')
-      } catch(error) {
-        field.setCustomValidity(errorMessage)
-      }
+});
+    
+// solution button animation
+$(".action-button.solution").click(function () {
+    $(".main--content").animate(
+    {
+        scrollTop: $("#solution-row").offset().top
+    },
+    750
+    );
+});
+    
+// grab MS member id
+var cid = $("#cid").text();
+$("#payout-id").val(cid);
+
+// hide pro tickets
+$("#ticket-table .tickets-cl > div").each(function () {
+    var card = $(this);
+    if (card.attr("client-id") !== cid) {
+    card.remove();
+    } else {
+    card.show();
+    }
+});
+$("#pro-tickets .tickets-cl > div").each(function () {
+    var card = $(this);
+    if (card.attr("helper-id") !== cid) {
+    card.remove();
+    } else {
+    card.show();
+    }
+});
+        
+$("#ticket-table, #pro-tickets").show();
+        
+// notifications
+const urlParams = new URLSearchParams(window.location.search);
+const msg = urlParams.get("msg");
+if (msg !== null) {
+    console.log(msg);
+    $(".messages-wrapper").show();
+    $("#msg-" + msg).show();
+    setTimeout(() => {
+    $(".messages-wrapper").fadeOut(500, () => {
+        $(".messages-wrapper").hide();
+        $("#msg-" + msg).hide();
+    });
+    }, 5000);
+}
+        
+// ticket table
+$("#tt-all").on("click", function (evt) {
+    $(".ticket-table--tab-link").removeClass("current");
+    $(this).addClass("current");
+    $("#w-tabs-0-data-w-tab-0").triggerHandler("click");
+    evt.preventDefault();
+});
+$("#tt-open").on("click", function (evt) {
+    $(".ticket-table--tab-link").removeClass("current");
+    $(this).addClass("current");
+    $("#w-tabs-0-data-w-tab-1").triggerHandler("click");
+    evt.preventDefault();
+});
+$("#tt-ip").on("click", function (evt) {
+    $(".ticket-table--tab-link").removeClass("current");
+    $(this).addClass("current");
+    $("#w-tabs-0-data-w-tab-2").triggerHandler("click");
+    evt.preventDefault();
+});
+$("#tt-solved").on("click", function (evt) {
+    $(".ticket-table--tab-link").removeClass("current");
+    $(this).addClass("current");
+    $("#w-tabs-0-data-w-tab-3").triggerHandler("click");
+    evt.preventDefault();
+});
+        
+// ticket submit form
+var submitButton = $(".wh-form .form-button");
+// Get all of the input fields in the form
+var inputFields = $(".wh-form input");
+        
+// When any input field is changed, check if the form is completely filled out
+inputFields.on("input", function () {
+    // Check if all of the input fields have a value
+    const isFormFilledOut = Array.from(inputFields).every(input => input.value !== '')
+        
+    // disable submit button if the form is not filled out
+    if (isFormFilledOut) {
+    submitButton.prop("disabled", false).removeClass("disabled")
+    } else {
+    submitButton.prop('disabled', true).addClass('disabled')
+    }
+    $('.wh-form').submit(function(e) {
+    e.preventDefault()
+    const form = $(this)
+    const thisForm = this
+    this.checkValidity()
+    // check if the form is filled out
+    const isFormFilledOut = Array.from(inputFields).every(input => input.value !== '')
+    // check if ticket value is greater than 25
+    const isTicketValueGreaterThanOrEqualToMinimum = getTicketValue() >= tokensConfig.MINIMUM_TICKET_CREDITS
+
+    if (isFormFilledOut && isTicketValueGreaterThanOrEqualToMinimum) {
+        submitButton.prop('disabled', true).addClass('disabled').val('Please wait...')
+        form.submit()
+    }
     })
-  
-    $('#project-link').on('blur', function() {
-      const field = this
-      const errorMessage = 'Incorrect URL - should be Webflow preview link'
-      try {
-        const url = new URL(field.value)
-        if (!url.origin.endsWith('preview.webflow.com')) {
-          field.setCustomValidity(errorMessage)
-          throw new Error(errorMessage)
-        }
-        field.setCustomValidity('')
-      } catch(error) {
+})
+
+// gift
+var giftButton = $("#gift-submit");
+    // Get all of the input fields in the form
+var giftFields = $("#wf-form-gift-form input");
+
+// When any input field is changed, check if the form is completely filled out
+giftFields.on("input", function () {
+    const isFormFilledOut = Array.from(giftFields).every(input => input.value !== '')
+    // disable submit button if the form is not filled out
+    if (isFormFilledOut) {
+    giftButton.prop("disabled", false).removeClass("disabled")
+    } else {
+    giftButton.prop('disabled', true).addClass('disabled')
+    }
+})
+    
+// When the form is submitted, disable the submit button
+$("#wf-form-gift-form").submit(function (e) {
+    e.preventDefault()
+    const form = $(this)
+    // check if the form is filled out
+    const isFormFilledOut = Array.from(giftFields).every(input => input.value !== '')
+    // check if credits are above 0
+    const isCreditsAboveZero = getGiftValue() > 0
+    if (isFormFilledOut && isCreditsAboveZero) {
+    giftButton.prop('disabled', true).addClass('disabled').val('Please wait...')
+    form.submit()
+    }
+});
+
+// lowercase email input in the send gift form
+var emailInput = $("#email-2");
+emailInput.keyup(function () {
+    $(this).val($(this).val().toLowerCase());
+});
+
+// update ticket submit form inputs to be of type url
+$("#solution-video, #resource-link, #screen-recording, #project-link").attr(
+    "type",
+    "url"
+);
+    
+// update ticket submit form inputs to be of type url
+$('#screen-recording').on('blur', function() {
+    const field = this
+    const errorMessage = 'Incorrect URL - should be Loom video link'
+    try {
+    const url = new URL(field.value)
+    if (!url.origin.endsWith('loom.com')) {
         field.setCustomValidity(errorMessage)
-      }
-    })
-  })
+        throw new Error(errorMessage)
+    }
+    field.setCustomValidity('')
+    } catch(error) {
+    field.setCustomValidity(errorMessage)
+    }
+})
+
+$('#project-link').on('blur', function() {
+    const field = this
+    const errorMessage = 'Incorrect URL - should be Webflow preview link'
+    try {
+    const url = new URL(field.value)
+    if (!url.origin.endsWith('preview.webflow.com')) {
+        field.setCustomValidity(errorMessage)
+        throw new Error(errorMessage)
+    }
+    field.setCustomValidity('')
+    } catch(error) {
+    field.setCustomValidity(errorMessage)
+    }
+})
