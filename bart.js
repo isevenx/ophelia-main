@@ -1,4 +1,4 @@
-//ophelia v0.1.1
+//ophelia v0.1.5
 
 const tokensConfig = {
     MINIMUM_TICKET_CREDITS: 25,
