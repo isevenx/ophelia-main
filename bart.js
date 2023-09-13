@@ -377,7 +377,7 @@ const tokensConfig = {
       const errorMessage = 'Incorrect URL - should be Loom video link'
       try {
         const url = new URL(field.value)
-        if (!url.origin.endsWith('loom.com') && !url.pathname.startsWith('/share/')) {
+        if (!url.origin.endsWith('loom.com')) {
           field.setCustomValidity(errorMessage)
           throw new Error(errorMessage)
         }
@@ -389,10 +389,10 @@ const tokensConfig = {
   
     $('#project-link').on('blur', function() {
       const field = this
-      const errorMessage = 'Incorrect URL - should be Loom video link'
+      const errorMessage = 'Incorrect URL - should be Webflow preview link'
       try {
         const url = new URL(field.value)
-        if (!url.origin.endsWith('preview.webflow.com') && !url.pathname.startsWith('/preview/')) {
+        if (!url.origin.endsWith('preview.webflow.com')) {
           field.setCustomValidity(errorMessage)
           throw new Error(errorMessage)
         }
